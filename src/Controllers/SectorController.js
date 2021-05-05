@@ -71,6 +71,12 @@ const sectorDelete = async (req, res) => {
   }
 };
 
+const newestFourSectorsGet = async (req, res) => {
+  const sectors = await Sector.find().limit(4).sort({ createdAt: -1 });
+
+  return res.status(200).json(sectors);
+};
+
 module.exports = {
-  sectorGet, sectorId, sectorCreate, sectorUpdate, sectorDelete,
+  sectorGet, sectorId, sectorCreate, sectorUpdate, sectorDelete, newestFourSectorsGet,
 };
