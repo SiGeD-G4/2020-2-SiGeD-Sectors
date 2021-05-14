@@ -1,0 +1,19 @@
+name: sonarCoverage
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+  
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Tests check
+      run: docker network create siged_backend && docker-compose run backend_sector bash -c  "yarn && yarn jest --coverage --passWithNoTests --forceExit && cat test-report.xml"
+
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
